@@ -1,0 +1,27 @@
+{
+  "name": "30",
+  "version": "1.0.0",
+  "description": "30 Years Defacto",
+  "main": "build/js/main.js",
+  "scripts": {
+    "build-js": "babel src/js -d build/js",
+    "build-sass": "node-sass src/sass/main.scss build/css/main.css",
+    "build": "npm run build-js & npm run build-sass & cp src/index.html build/index.html",
+    "watch-js": "nodemon -e js --watch src/js -x 'npm run build-js'",
+    "watch-sass": "nodemon -e scss --watch src/sass -x 'npm run build-sass'",
+    "watch": "npm run watch-js & npm run watch-sass && cp src/index.html build/index.html"
+  },
+  "author": "sn3p <matthijs@defacto.nl>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-eslint": "^7.1.1",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "nodemon": "^1.11.0"
+  }
+}

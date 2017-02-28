@@ -1,7 +1,15 @@
-var Math2={};
-Math2.random=function(t,n){return Math.random()*(n-t)+t};
-Math2.randomPlusMinus=function(t){return t=t?t:.5,Math.random()>t?-1:1};
-Math2.randomInt=function(t,n){return n+=1,Math.floor(Math.random()*(n-t)+t)};
+'use strict';
+
+var Math2 = {};
+Math2.random = function (t, n) {
+  return Math.random() * (n - t) + t;
+};
+Math2.randomPlusMinus = function (t) {
+  return t = t ? t : .5, Math.random() > t ? -1 : 1;
+};
+Math2.randomInt = function (t, n) {
+  return n += 1, Math.floor(Math.random() * (n - t) + t);
+};
 
 var options = {
   width: window.innerWidth,
@@ -28,11 +36,11 @@ document.body.appendChild(renderer.view);
 
 var particles = [];
 
-function init () {
+function init() {
   positionParticles();
 }
 
-function positionParticles () {
+function positionParticles() {
   var text = new PIXI.Text('30', {
     fontFamily: 'Arial',
     fontSize: 300,
@@ -49,15 +57,12 @@ function positionParticles () {
     for (var j = 0; j < imageData.width; j += options.density) {
 
       // Get the color of the pixel
-      var color = imageData.data[((j * (imageData.width * 4)) + (i * 4)) - 1];
+      var color = imageData.data[j * (imageData.width * 4) + i * 4 - 1];
 
       // If the color is black, draw pixels
       if (color === 255) {
         var newPar = particle();
-        newPar.position.set(
-          i - text.width / 2,
-          j - text.height / 2
-        );
+        newPar.position.set(i - text.width / 2, j - text.height / 2);
         particles.push(newPar);
         stage.addChild(newPar);
       }
@@ -65,10 +70,10 @@ function positionParticles () {
   }
 }
 
-function particle (text) {
+function particle(text) {
   var radius = Math.random() * 10.5;
 
-  p = new PIXI.Graphics()
+  var p = new PIXI.Graphics();
   p.beginFill(0Xffb600);
   p.drawCircle(0, 0, radius);
 
@@ -80,13 +85,13 @@ function particle (text) {
   return p;
 }
 
-function update () {
+function update() {
   renderer.render(stage);
 
-  for (i = 0; i < particles.length; i++) {
+  for (var i = 0; i < particles.length; i++) {
     var p = particles[i];
-    p.x = p.x + .2 * Math.sin(p.timer * .15)
-    p.y = p.y + .2 * Math.cos(p.timer * .15)
+    p.x = p.x + .2 * Math.sin(p.timer * .15);
+    p.y = p.y + .2 * Math.cos(p.timer * .15);
     p.timer = p.timer + p.v;
   }
 
