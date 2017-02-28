@@ -6,10 +6,12 @@
   "scripts": {
     "build-js": "babel src/js -d build/js",
     "build-sass": "node-sass src/sass/main.scss build/css/main.css",
-    "build": "npm run build-js & npm run build-sass & cp src/index.html build/index.html",
+    "build-html": "cp src/index.html build/index.html",
+    "build": "npm run build-js & npm run build-sass & npm run build-html",
     "watch-js": "nodemon -e js --watch src/js -x 'npm run build-js'",
     "watch-sass": "nodemon -e scss --watch src/sass -x 'npm run build-sass'",
-    "watch": "npm run watch-js & npm run watch-sass && cp src/index.html build/index.html"
+    "watch-html": "nodemon -e html --watch src -x 'npm run build-html'",
+    "watch": "npm run watch-js & npm run watch-sass & npm run watch-html"
   },
   "author": "sn3p <matthijs@defacto.nl>",
   "license": "MIT",
