@@ -1,8 +1,15 @@
+const Math2={};
+Math2.random=function(t,n){return Math.random()*(n-t)+t};
+Math2.randomPlusMinus=function(t){return t=t?t:.5,Math.random()>t?-1:1};
+Math2.randomInt=function(t,n){return n+=1,Math.floor(Math.random()*(n-t)+t)};
+
 const options = {
   width: window.innerWidth,
   height: window.innerHeight,
-  keyword: '30',
-  density: 8
+  text: '30',
+  size: 500,
+  density: 14,
+  colors: [0x222222, 0xc49a62, 0xffb600, 0x5ccfea, 0x98edc2, 0xceff00, 0xe90055, 0xbfb1f2],
 };
 
 const app = new PIXI.Application(options.width, options.height, {
@@ -26,13 +33,13 @@ function init () {
 }
 
 function positionParticles () {
-  const text = new PIXI.Text('30', {
+  const text = new PIXI.Text(options.text, {
     fontFamily: 'Arial',
-    fontSize: 300,
-    fill: '#000000',
+    fontSize: options.size,
+    fill: 0x000000,
     align: 'center'
   });
-  text.anchor.set(0.5);
+  text.anchor.set(.5);
   // container.addChild(text);
 
   const imageData = text.context.getImageData(0, 0, text.width, text.height);
@@ -46,45 +53,56 @@ function positionParticles () {
 
       // If the color is black, draw pixels
       if (color === 255) {
-        const particle = Particle();
-        particle.position.set(
+        createParticle(
           i - text.width / 2,
           j - text.height / 2
         );
-        particles.push(particle);
-        container.addChild(particle);
       }
     }
   }
 }
 
-function Particle () {
-  const Math2={};
-  Math2.random=function(t,n){return Math.random()*(n-t)+t};
-  Math2.randomPlusMinus=function(t){return t=t?t:.5,Math.random()>t?-1:1};
-  Math2.randomInt=function(t,n){return n+=1,Math.floor(Math.random()*(n-t)+t)};
+function createParticle (x, y) {
+  const color = options.colors[Math.floor(Math.random() * options.colors.length)];
+  const particle = Particle(color);
+  particle.position.set(x, y);
+  particles.push(particle);
+  container.addChild(particle);
+}
 
-  const p = new PIXI.Graphics()
-  const radius = Math.random() * 10.5;
+function Particle (color) {
+  const p = new PIXI.Graphics();
 
-  p.beginFill(0Xffb600);
-  p.drawCircle(0, 0, radius);
+  p.beginFill(color);
 
-  p.timer = Math2.randomInt(0, 100);
+  // Draw a circle
+  if (Math.random() >= .5) {
+    const radius = Math.random() * 8 + 1;
+    p.drawCircle(0, 0, radius);
+
+  // Draw a square
+  } else {
+    const size = Math.random() * 10 + 5;
+    p.drawRect(0, 0, size, size);
+    p.rotation = 40;
+  }
+
+  p.pos = Math2.randomInt(0, 100);
   p.v = Math2.randomPlusMinus() * Math2.random(.5, 1);
+  p.sling = Math2.random(.2, 1.5);
+  // p.alpha = Math2.randomInt(10, 100) / 100;
 
-  p.alpha = Math2.randomInt(10, 100) / 100;
+  p.update = function () {
+    p.x = p.x + p.sling * Math.sin(p.pos * .15);
+    p.y = p.y + p.sling * Math.cos(p.pos * .15);
+    p.pos = p.pos + p.v;
+  }
 
   return p;
 }
 
 function update () {
-  for (let i = 0; i < particles.length; i++) {
-    const p = particles[i];
-    p.x = p.x + .2 * Math.sin(p.timer * .15)
-    p.y = p.y + .2 * Math.cos(p.timer * .15)
-    p.timer = p.timer + p.v;
-  }
+  particles.forEach(p => p.update());
 }
 
 init();
