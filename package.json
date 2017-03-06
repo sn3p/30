@@ -2,26 +2,33 @@
   "name": "30",
   "version": "1.0.0",
   "description": "30 Years Defacto",
-  "main": "build/js/main.js",
+  "main": "build/js/main.bundle.js",
   "scripts": {
-    "build-js": "babel src/js -d build/js",
-    "build-sass": "node-sass src/sass/main.scss build/css/main.css",
-    "build": "npm run build-js & npm run build-sass",
-    "watch-js": "nodemon -e js --watch src/js -x 'npm run build-js'",
-    "watch-sass": "nodemon -e scss --watch src/sass -x 'npm run build-sass'",
-    "watch": "npm run watch-js & npm run watch-sass"
+    "watch": "webpack --watch",
+    "build": "webpack",
+    "serve": "webpack-dev-server --progress --colors",
+    "lint": "eslint src/js"
   },
-  "author": "sn3p <matthijs@defacto.nl>",
+  "author": "sn3p",
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
     "babel-eslint": "^7.1.1",
+    "babel-loader": "^6.3.2",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-stage-0": "^6.22.0",
+    "css-loader": "^0.26.2",
     "eslint": "^3.16.1",
     "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-loader": "^1.6.3",
     "eslint-plugin-import": "^2.2.0",
-    "nodemon": "^1.11.0"
+    "extract-text-webpack-plugin": "^2.0.0",
+    "postcss": "^5.2.15",
+    "postcss-cssnext": "^2.9.0",
+    "postcss-import": "^9.1.0",
+    "postcss-loader": "^1.3.3",
+    "style-loader": "^0.13.2",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
   }
 }

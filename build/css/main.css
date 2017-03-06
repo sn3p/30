@@ -1,9 +1,0 @@
-body {
-  margin: 0;
-  padding: 0; }
-
-canvas {
-  left: 50%;
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%) translateX(-50%); }
