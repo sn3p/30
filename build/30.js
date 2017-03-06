@@ -63,11 +63,153 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Utils = __webpack_require__(2);
+
+var _Utils2 = _interopRequireDefault(_Utils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Thirty = function () {
+  function Thirty(options) {
+    _classCallCheck(this, Thirty);
+
+    this.options = options;
+
+    this.init();
+  }
+
+  _createClass(Thirty, [{
+    key: 'init',
+    value: function init() {
+      // Craete PIXI app
+      this.app = new PIXI.Application(this.options.width, this.options.height, {
+        transparent: true,
+        antialias: true
+      });
+      document.body.appendChild(this.app.view);
+
+      // Create partible container
+      this.container = new PIXI.Container();
+      this.container.x = this.app.renderer.width / 2;
+      this.container.y = this.app.renderer.height / 2;
+      this.app.stage.addChild(this.container);
+
+      // Render updates
+      this.app.ticker.add(this.update.bind(this));
+
+      // Create particles
+      this.particles = [];
+      this.createParticles();
+    }
+  }, {
+    key: 'createParticles',
+    value: function createParticles() {
+      var text = new PIXI.Text(this.options.text, {
+        fontFamily: 'Arial',
+        fontSize: this.options.size,
+        fill: 0x000000,
+        align: 'center'
+      });
+      text.anchor.set(.5);
+      // container.addChild(text);
+
+      var imageData = text.context.getImageData(0, 0, text.width, text.height);
+
+      // Iterate each row and column
+      for (var i = 0; i < imageData.height; i += this.options.density) {
+        for (var j = 0; j < imageData.width; j += this.options.density) {
+
+          // Get the color of the pixel
+          var color = imageData.data[j * (imageData.width * 4) + i * 4 - 1];
+
+          // If the color is black, draw pixels
+          if (color === 255) {
+            this.createParticle(i - text.width / 2, j - text.height / 2);
+          }
+        }
+      }
+    }
+  }, {
+    key: 'createParticle',
+    value: function createParticle(x, y) {
+      var color = this.options.colors[Math.floor(Math.random() * this.options.colors.length)];
+      var particle = this.particle(color);
+      particle.position.set(x, y);
+      this.particles.push(particle);
+      this.container.addChild(particle);
+    }
+  }, {
+    key: 'particle',
+    value: function particle(color) {
+      var p = new PIXI.Graphics();
+
+      p.beginFill(color);
+
+      // Draw a circle
+      if (Math.random() >= .5) {
+        var radius = Math.random() * 8 + 1;
+        p.drawCircle(0, 0, radius);
+
+        // Draw a square
+      } else {
+        var size = Math.random() * 10 + 5;
+        p.drawRect(0, 0, size, size);
+        p.rotation = 40;
+      }
+
+      p.pos = _Utils2.default.randomInt(0, 100);
+      p.v = _Utils2.default.randomPlusMinus() * _Utils2.default.random(.5, 1);
+      p.sling = _Utils2.default.random(.2, 1.5);
+      // p.alpha = Utils.randomInt(10, 100) / 100;
+
+      p.update = function () {
+        p.x = p.x + p.sling * Math.sin(p.pos * .15);
+        p.y = p.y + p.sling * Math.cos(p.pos * .15);
+        p.pos = p.pos + p.v;
+      };
+
+      return p;
+    }
+  }, {
+    key: 'update',
+    value: function update() {
+      this.particles.forEach(function (p) {
+        return p.update();
+      });
+    }
+  }]);
+
+  return Thirty;
+}();
+
+exports.default = Thirty;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -114,13 +256,7 @@ var Utils = {
 exports.default = Utils;
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -128,9 +264,9 @@ exports.default = Utils;
 
 __webpack_require__(1);
 
-var _Utils = __webpack_require__(0);
+var _Thirty = __webpack_require__(0);
 
-var _Utils2 = _interopRequireDefault(_Utils);
+var _Thirty2 = _interopRequireDefault(_Thirty);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -140,102 +276,10 @@ var options = {
   text: '30',
   size: 500,
   density: 14,
-  colors: [0x222222, 0xc49a62, 0xffb600, 0x5ccfea, 0x98edc2, 0xceff00, 0xe90055, 0xbfb1f2]
+  colors: [0x222222, 0xc49a62, 0xffb600, 0x5ccfea, 0xceff00, 0xe90055, 0xbfb1f2]
 };
 
-var app = new PIXI.Application(options.width, options.height, {
-  transparent: true,
-  antialias: true
-});
-
-document.body.appendChild(app.view);
-
-var container = new PIXI.Container();
-container.x = app.renderer.width / 2;
-container.y = app.renderer.height / 2;
-app.stage.addChild(container);
-
-app.ticker.add(update);
-
-var particles = [];
-
-function init() {
-  positionParticles();
-}
-
-function positionParticles() {
-  var text = new PIXI.Text(options.text, {
-    fontFamily: 'Arial',
-    fontSize: options.size,
-    fill: 0x000000,
-    align: 'center'
-  });
-  text.anchor.set(.5);
-  // container.addChild(text);
-
-  var imageData = text.context.getImageData(0, 0, text.width, text.height);
-
-  // Iterate each row and column
-  for (var i = 0; i < imageData.height; i += options.density) {
-    for (var j = 0; j < imageData.width; j += options.density) {
-
-      // Get the color of the pixel
-      var color = imageData.data[j * (imageData.width * 4) + i * 4 - 1];
-
-      // If the color is black, draw pixels
-      if (color === 255) {
-        createParticle(i - text.width / 2, j - text.height / 2);
-      }
-    }
-  }
-}
-
-function createParticle(x, y) {
-  var color = options.colors[Math.floor(Math.random() * options.colors.length)];
-  var particle = Particle(color);
-  particle.position.set(x, y);
-  particles.push(particle);
-  container.addChild(particle);
-}
-
-function Particle(color) {
-  var p = new PIXI.Graphics();
-
-  p.beginFill(color);
-
-  // Draw a circle
-  if (Math.random() >= .5) {
-    var radius = Math.random() * 8 + 1;
-    p.drawCircle(0, 0, radius);
-
-    // Draw a square
-  } else {
-    var size = Math.random() * 10 + 5;
-    p.drawRect(0, 0, size, size);
-    p.rotation = 40;
-  }
-
-  p.pos = _Utils2.default.randomInt(0, 100);
-  p.v = _Utils2.default.randomPlusMinus() * _Utils2.default.random(.5, 1);
-  p.sling = _Utils2.default.random(.2, 1.5);
-  // p.alpha = Utils.randomInt(10, 100) / 100;
-
-  p.update = function () {
-    p.x = p.x + p.sling * Math.sin(p.pos * .15);
-    p.y = p.y + p.sling * Math.cos(p.pos * .15);
-    p.pos = p.pos + p.v;
-  };
-
-  return p;
-}
-
-function update() {
-  particles.forEach(function (p) {
-    return p.update();
-  });
-}
-
-init();
+var thirty = new _Thirty2.default(options);
 
 /***/ })
 /******/ ]);
