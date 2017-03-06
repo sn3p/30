@@ -1,3 +1,5 @@
+import '../css/main.css';
+
 const Math2={};
 Math2.random=function(t,n){return Math.random()*(n-t)+t};
 Math2.randomPlusMinus=function(t){return t=t?t:.5,Math.random()>t?-1:1};
