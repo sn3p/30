@@ -6,7 +6,7 @@ module.exports = {
   entry: './src/js/main.js',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'main.bundle.js'
+    filename: '30.js'
   },
   module: {
     rules: [
@@ -42,6 +42,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin('[name].bundle.css')
+    new ExtractTextPlugin('30.css')
   ]
 };

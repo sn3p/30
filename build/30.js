@@ -218,7 +218,7 @@ function Particle(color) {
   p.pos = _Utils2.default.randomInt(0, 100);
   p.v = _Utils2.default.randomPlusMinus() * _Utils2.default.random(.5, 1);
   p.sling = _Utils2.default.random(.2, 1.5);
-  p.alpha = _Utils2.default.randomInt(10, 100) / 100;
+  // p.alpha = Utils.randomInt(10, 100) / 100;
 
   p.update = function () {
     p.x = p.x + p.sling * Math.sin(p.pos * .15);
