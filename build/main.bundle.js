@@ -63,34 +63,76 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(0);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var Utils = {
+  /**
+   * Get a random floating point number between `min` and `max`.
+   *
+   * @param {number} min - min number
+   * @param {number} max - max number
+   * @return {float} a random floating point number
+   */
+  random: function random(min, max) {
+    return Math.random() * (max - min) + min;
+  },
 
-var Math2 = {};
-Math2.random = function (t, n) {
-  return Math.random() * (n - t) + t;
+  /**
+   * Get a random integer between `min` and `max`.
+   *
+   * @param {number} min - min number
+   * @param {number} max - max number
+   * @return {int} a random integer
+   */
+  randomInt: function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  },
+
+  /**
+   * Get a random 1 or -1 integer.
+   *
+   * @param {number} t - number between 0 and 1
+   * @return {int} a random 1 or -1 integer
+   */
+  randomPlusMinus: function randomPlusMinus(t) {
+    t = t ? t : .5;
+    return Math.random() > t ? -1 : 1;
+  }
 };
-Math2.randomPlusMinus = function (t) {
-  return t = t ? t : .5, Math.random() > t ? -1 : 1;
-};
-Math2.randomInt = function (t, n) {
-  return n += 1, Math.floor(Math.random() * (n - t) + t);
-};
+
+exports.default = Utils;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(1);
+
+var _Utils = __webpack_require__(0);
+
+var _Utils2 = _interopRequireDefault(_Utils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var options = {
   width: window.innerWidth,
@@ -173,10 +215,10 @@ function Particle(color) {
     p.rotation = 40;
   }
 
-  p.pos = Math2.randomInt(0, 100);
-  p.v = Math2.randomPlusMinus() * Math2.random(.5, 1);
-  p.sling = Math2.random(.2, 1.5);
-  // p.alpha = Math2.randomInt(10, 100) / 100;
+  p.pos = _Utils2.default.randomInt(0, 100);
+  p.v = _Utils2.default.randomPlusMinus() * _Utils2.default.random(.5, 1);
+  p.sling = _Utils2.default.random(.2, 1.5);
+  p.alpha = _Utils2.default.randomInt(10, 100) / 100;
 
   p.update = function () {
     p.x = p.x + p.sling * Math.sin(p.pos * .15);

@@ -1,9 +1,5 @@
 import '../css/main.css';
-
-const Math2={};
-Math2.random=function(t,n){return Math.random()*(n-t)+t};
-Math2.randomPlusMinus=function(t){return t=t?t:.5,Math.random()>t?-1:1};
-Math2.randomInt=function(t,n){return n+=1,Math.floor(Math.random()*(n-t)+t)};
+import Utils from './Utils';
 
 const options = {
   width: window.innerWidth,
@@ -89,10 +85,10 @@ function Particle (color) {
     p.rotation = 40;
   }
 
-  p.pos = Math2.randomInt(0, 100);
-  p.v = Math2.randomPlusMinus() * Math2.random(.5, 1);
-  p.sling = Math2.random(.2, 1.5);
-  // p.alpha = Math2.randomInt(10, 100) / 100;
+  p.pos = Utils.randomInt(0, 100);
+  p.v = Utils.randomPlusMinus() * Utils.random(.5, 1);
+  p.sling = Utils.random(.2, 1.5);
+  // p.alpha = Utils.randomInt(10, 100) / 100;
 
   p.update = function () {
     p.x = p.x + p.sling * Math.sin(p.pos * .15);
