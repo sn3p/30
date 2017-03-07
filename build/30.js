@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -79,9 +79,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Utils = __webpack_require__(2);
+var _Particle = __webpack_require__(2);
 
-var _Utils2 = _interopRequireDefault(_Utils);
+var _Particle2 = _interopRequireDefault(_Particle);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -151,42 +151,10 @@ var Thirty = function () {
     key: 'createParticle',
     value: function createParticle(x, y) {
       var color = this.options.colors[Math.floor(Math.random() * this.options.colors.length)];
-      var particle = this.particle(color);
-      particle.position.set(x, y);
+      var particle = new _Particle2.default(color);
+      particle.position(x, y);
       this.particles.push(particle);
-      this.container.addChild(particle);
-    }
-  }, {
-    key: 'particle',
-    value: function particle(color) {
-      var p = new PIXI.Graphics();
-
-      p.beginFill(color);
-
-      // Draw a circle
-      if (Math.random() >= .5) {
-        var radius = Math.random() * 8 + 1;
-        p.drawCircle(0, 0, radius);
-
-        // Draw a square
-      } else {
-        var size = Math.random() * 10 + 5;
-        p.drawRect(0, 0, size, size);
-        p.rotation = 40;
-      }
-
-      p.pos = _Utils2.default.randomInt(0, 100);
-      p.v = _Utils2.default.randomPlusMinus() * _Utils2.default.random(.5, 1);
-      p.sling = _Utils2.default.random(.2, 1.5);
-      // p.alpha = Utils.randomInt(10, 100) / 100;
-
-      p.update = function () {
-        p.x = p.x + p.sling * Math.sin(p.pos * .15);
-        p.y = p.y + p.sling * Math.cos(p.pos * .15);
-        p.pos = p.pos + p.v;
-      };
-
-      return p;
+      this.container.addChild(particle.gfx);
     }
   }, {
     key: 'update',
@@ -210,6 +178,79 @@ exports.default = Thirty;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Utils = __webpack_require__(3);
+
+var _Utils2 = _interopRequireDefault(_Utils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Particle = function () {
+  function Particle(color) {
+    _classCallCheck(this, Particle);
+
+    this.color = color || 0x000000;
+
+    this.init();
+  }
+
+  _createClass(Particle, [{
+    key: 'init',
+    value: function init() {
+      this.gfx = new PIXI.Graphics();
+
+      this.gfx.beginFill(this.color);
+
+      // Draw a circle
+      if (Math.random() >= .5) {
+        var radius = Math.random() * 8 + 1;
+        this.gfx.drawCircle(0, 0, radius);
+
+        // Draw a square
+      } else {
+        var size = Math.random() * 10 + 5;
+        this.gfx.drawRect(0, 0, size, size);
+        this.gfx.rotation = 40;
+      }
+
+      // this.gfx.alpha = Utils.randomInt(10, 100) / 100;
+      this.pos = _Utils2.default.randomInt(0, 100);
+      this.velocity = _Utils2.default.randomPlusMinus() * _Utils2.default.random(.5, 1);
+      this.sling = _Utils2.default.random(.2, 1.5);
+    }
+  }, {
+    key: 'position',
+    value: function position(x, y) {
+      this.gfx.position.set(x, y);
+    }
+  }, {
+    key: 'update',
+    value: function update() {
+      this.gfx.x += this.sling * Math.sin(this.pos * .15);
+      this.gfx.y += this.sling * Math.cos(this.pos * .15);
+      this.pos += this.velocity;
+    }
+  }]);
+
+  return Particle;
+}();
+
+exports.default = Particle;
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -256,7 +297,7 @@ var Utils = {
 exports.default = Utils;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -276,7 +317,7 @@ var options = {
   text: '30',
   size: 500,
   density: 14,
-  colors: [0x222222, 0xc49a62, 0xffb600, 0x5ccfea, 0xceff00, 0xe90055, 0xbfb1f2]
+  colors: [0x222222, 0xc49a62, 0xffb600, 0x5ccfea, 0x98edc2, 0xceff00, 0xe90055, 0xbfb1f2]
 };
 
 var thirty = new _Thirty2.default(options);

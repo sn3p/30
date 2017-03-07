@@ -1,4 +1,4 @@
-import Utils from './Utils';
+import Particle from './Particle';
 
 class Thirty {
   constructor (options) {
@@ -63,41 +63,10 @@ class Thirty {
     const color = this.options.colors[
       Math.floor(Math.random() * this.options.colors.length)
     ];
-    const particle = this.particle(color);
-    particle.position.set(x, y);
+    const particle = new Particle(color);
+    particle.position(x, y);
     this.particles.push(particle);
-    this.container.addChild(particle);
-  }
-
-  particle (color) {
-    const p = new PIXI.Graphics();
-
-    p.beginFill(color);
-
-    // Draw a circle
-    if (Math.random() >= .5) {
-      const radius = Math.random() * 8 + 1;
-      p.drawCircle(0, 0, radius);
-
-    // Draw a square
-    } else {
-      const size = Math.random() * 10 + 5;
-      p.drawRect(0, 0, size, size);
-      p.rotation = 40;
-    }
-
-    p.pos = Utils.randomInt(0, 100);
-    p.v = Utils.randomPlusMinus() * Utils.random(.5, 1);
-    p.sling = Utils.random(.2, 1.5);
-    // p.alpha = Utils.randomInt(10, 100) / 100;
-
-    p.update = function () {
-      p.x = p.x + p.sling * Math.sin(p.pos * .15);
-      p.y = p.y + p.sling * Math.cos(p.pos * .15);
-      p.pos = p.pos + p.v;
-    }
-
-    return p;
+    this.container.addChild(particle.gfx);
   }
 
   update () {
