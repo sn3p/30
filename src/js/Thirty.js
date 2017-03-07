@@ -37,22 +37,23 @@ class Thirty {
       align: 'center'
     });
     text.anchor.set(.5);
-    // container.addChild(text);
+    // this.container.addChild(text);
 
+    // Get text image data
     const imageData = text.context.getImageData(0, 0, text.width, text.height);
 
-    // Iterate each row and column
-    for (let i = 0; i < imageData.height; i += this.options.density) {
-      for (let j = 0; j < imageData.width; j += this.options.density) {
+    // Iterate each column amd row
+    for (let y = 0; y < imageData.height; y += this.options.density) {
+      for (let x = 0; x < imageData.width; x += this.options.density) {
 
         // Get the color of the pixel
-        const color = imageData.data[((j * (imageData.width * 4)) + (i * 4)) - 1];
+        const color = imageData.data[(y * imageData.width + x) * 4 + 3];
 
         // If the color is black, draw pixels
         if (color === 255) {
           this.createParticle(
-            i - text.width / 2,
-            j - text.height / 2
+            x - text.width / 2,
+            y - text.height / 2
           );
         }
       }

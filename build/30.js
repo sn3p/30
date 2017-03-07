@@ -129,20 +129,21 @@ var Thirty = function () {
         align: 'center'
       });
       text.anchor.set(.5);
-      // container.addChild(text);
+      // this.container.addChild(text);
 
+      // Get text image data
       var imageData = text.context.getImageData(0, 0, text.width, text.height);
 
-      // Iterate each row and column
-      for (var i = 0; i < imageData.height; i += this.options.density) {
-        for (var j = 0; j < imageData.width; j += this.options.density) {
+      // Iterate each column amd row
+      for (var y = 0; y < imageData.height; y += this.options.density) {
+        for (var x = 0; x < imageData.width; x += this.options.density) {
 
           // Get the color of the pixel
-          var color = imageData.data[j * (imageData.width * 4) + i * 4 - 1];
+          var color = imageData.data[(y * imageData.width + x) * 4 + 3];
 
           // If the color is black, draw pixels
           if (color === 255) {
-            this.createParticle(i - text.width / 2, j - text.height / 2);
+            this.createParticle(x - text.width / 2, y - text.height / 2);
           }
         }
       }
@@ -316,7 +317,7 @@ var options = {
   height: window.innerHeight,
   text: '30',
   size: 500,
-  density: 14,
+  density: 12,
   colors: [0x222222, 0xc49a62, 0xffb600, 0x5ccfea, 0x98edc2, 0xceff00, 0xe90055, 0xbfb1f2]
 };
 
