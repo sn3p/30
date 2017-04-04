@@ -11,7 +11,7 @@ class Thirty {
     // Craete PIXI app
     this.app = new PIXI.Application(this.options.width, this.options.height, {
       transparent: true,
-      antialias: true
+      antialias: true,
     });
     document.body.appendChild(this.app.view);
 
@@ -71,6 +71,7 @@ class Thirty {
   }
 
   update () {
+
     this.particles.forEach(p => p.update());
   }
 }

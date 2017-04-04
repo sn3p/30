@@ -1,13 +1,13 @@
 {
   "name": "30",
   "version": "1.0.0",
-  "description": "30 Years Defacto",
-  "main": "build/js/main.bundle.js",
+  "main": "build/30.js",
   "scripts": {
-    "watch": "webpack --watch",
-    "build": "webpack",
-    "serve": "webpack-dev-server --progress --colors",
-    "lint": "eslint src/js"
+    "watch": "./node_modules/.bin/webpack --watch",
+    "build": "./node_modules/.bin/webpack",
+    "serve": "./node_modules/.bin/webpack-dev-server --progress --colors",
+    "lint":  "./node_modules/.bin/eslint src/js --ignore-path .gitignore",
+    "test":  "npm run lint"
   },
   "author": "sn3p",
   "license": "MIT",
